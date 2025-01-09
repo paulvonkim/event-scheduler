@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [authenticated, setAuthenticated] = useState(false);
 
   const navigate = useNavigate();
+
+  // Initialize the state from localStorage if available
+  useEffect(() => {
+    const storedAuthenticated = JSON.parse(
+      localStorage.getItem("authenticated")
+    );
+    if (storedAuthenticated) {
+      setAuthenticated(true);
+    }
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,11 +29,20 @@ const SignIn = () => {
     // API should check for credentials
     if (email === "user@example.com" && password === "password123") {
       setErrorMessage("");
-      console.log("Sign-in successful!"); // this should be deleted
+      setAuthenticated(true);
+
+      // implement set key and authenticated to local storage
+      localStorage.setItem("authenticated", JSON.stringify(true));
+      console.log("Sign-in successful! "); // this should be deleted
+
       // Navigate to home page with events list
       navigate("/");
     } else {
       setErrorMessage("Invalid credentials. Please try again.");
+      setAuthenticated(false);
+      // Clear the localStorage if credentials are invalid
+      localStorage.removeItem("authenticated");
+      console.log("Sign-in unsuccessful!"); // this should be deleted
     }
   };
 

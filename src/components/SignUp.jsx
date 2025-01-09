@@ -15,12 +15,12 @@ const SignUp = () => {
       return;
     }
 
-    // API should check for credentials
+    // API should save user into db
     if (email === "user@example.com" && password === "password123") {
       setErrorMessage("");
       console.log("Sign-up successful!"); // this should be deleted
-      // Navigate to home page with events list
-      navigate("/");
+      // Navigate to sign in page
+      navigate("/signin");
     } else {
       setErrorMessage("There was an error creating an account.");
     }
