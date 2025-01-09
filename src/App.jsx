@@ -5,17 +5,25 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/signin" />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow flex items-center justify-center bg-base-200">
+          <Routes>
+            <Route path="/" element={<Navigate to="/signin" />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }
