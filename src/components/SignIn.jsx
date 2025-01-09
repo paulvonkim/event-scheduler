@@ -57,6 +57,7 @@ const SignIn = () => {
                   <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                 </svg>
                 <input
+                  id="text"
                   type="text"
                   className="grow"
                   placeholder="Email"
@@ -78,6 +79,7 @@ const SignIn = () => {
                   />
                 </svg>
                 <input
+                  id="password"
                   type="password"
                   className="grow"
                   placeholder="Password"
