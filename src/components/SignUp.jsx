@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -7,6 +7,16 @@ const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+
+  // Check if authenticated from localStorage if available and redirect to home if true
+  useEffect(() => {
+    const storedAuthenticated = JSON.parse(
+      localStorage.getItem("authenticated")
+    );
+    if (storedAuthenticated) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
