@@ -3,11 +3,12 @@ const Header = () => {
     <header>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="link link-hover text-3xl font-semibold pl-2" href="/">
+          <a className="link link-hover text-3xl font-semibold pl-3" href="/">
             Event Scheduler
           </a>
         </div>
         <nav className="flex-none">
+          {/* Should be visible only for signed in user */}
           <ul className="menu menu-horizontal px-1">
             <li>
               <a>+ New Event</a>

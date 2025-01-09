@@ -1,8 +1,29 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const SignUp = () => {
-  const handleSignUp = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle sign-up logic here
-    alert("Signed up!");
+    if (!email || !password) {
+      setErrorMessage("Please fill in both email and password");
+      return;
+    }
+
+    // API should check for credentials
+    if (email === "user@example.com" && password === "password123") {
+      setErrorMessage("");
+      console.log("Sign-up successful!"); // this should be deleted
+      // Navigate to home page with events list
+      navigate("/");
+    } else {
+      setErrorMessage("There was an error creating an account.");
+    }
   };
 
   return (
@@ -22,6 +43,7 @@ const SignUp = () => {
               className="flex flex-col gap-2 p-8"
               action="post"
               method="post"
+              onSubmit={handleSubmit}
             >
               <label className="input input-bordered flex items-center gap-2">
                 <svg
@@ -37,7 +59,7 @@ const SignUp = () => {
                   type="text"
                   className="grow"
                   placeholder="Email"
-                  required
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </label>
 
@@ -58,9 +80,12 @@ const SignUp = () => {
                   type="password"
                   className="grow"
                   placeholder="Password"
-                  required
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </label>
+              {errorMessage && (
+                <p className="text-red-500 text-sm">{errorMessage}</p>
+              )}
               <input type="submit" value="Submit" className="btn btn-neutral" />
             </form>
           </div>
