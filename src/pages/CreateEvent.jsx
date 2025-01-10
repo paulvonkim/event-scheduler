@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
@@ -11,13 +11,6 @@ const CreateEvent = () => {
   const [longitude, setLongitude] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const apiToken = localStorage.getItem("apiToken");
-    if (!apiToken) {
-      navigate("/signin");
-    }
-  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
