@@ -1,22 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-const Header = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [menuVisible, setmenuVisible] = useState(false);
-
-  const navigate = useNavigate();
-
-  // Initialize the state from localStorage if available
-  useEffect(() => {
-    const storedAuthenticated = JSON.parse(
-      localStorage.getItem("authenticated")
-    );
-    if (storedAuthenticated) {
-      setAuthenticated(true);
-      setmenuVisible(true);
-    }
-  });
+const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
+  const handleSignOut = () => {
+    setAuthenticated(false);
+    setmenuVisible(false);
+    localStorage.setItem("authenticated", JSON.stringify(false));
+  };
 
   return (
     <header>
@@ -35,8 +22,11 @@ const Header = () => {
                 <a>+ New Event</a>
               </li>
               <li>
+                <a href="#">Hi, username</a>
+              </li>
+              <li>
                 {/* should set auth to false and logout and redirect to signin  */}
-                <a href="#">Sign Out</a>
+                <a onClick={handleSignOut}>Sign Out</a>
               </li>
             </ul>
           )}
