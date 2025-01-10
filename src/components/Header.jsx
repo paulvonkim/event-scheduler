@@ -34,6 +34,9 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
           {!menuVisible && (
             <ul className="menu menu-horizontal px-1">
               <li>
+                <a href="/signin">Sign In</a>
+              </li>
+              <li>
                 <a href="/signup">Sign Up</a>
               </li>
             </ul>
