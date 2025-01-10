@@ -1,25 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
+const SignIn = ({ setAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
 
   const navigate = useNavigate();
 
-  // Initialize the state from localStorage if available
-  useEffect(() => {
-    const storedAuthenticated = JSON.parse(
-      localStorage.getItem("authenticated")
-    );
-    if (storedAuthenticated) {
-      setAuthenticated(true);
-    }
-  }, [navigate]);
-
-  const handleSubmit = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
     if (!email || !password) {
       setErrorMessage("Please fill in both email and password");
@@ -40,8 +29,7 @@ const SignIn = () => {
     } else {
       setErrorMessage("Invalid credentials. Please try again.");
       setAuthenticated(false);
-      // Clear the localStorage if credentials are invalid
-      localStorage.removeItem("authenticated");
+      localStorage.setItem("authenticated", JSON.stringify(false));
       console.log("Sign-in unsuccessful!"); // this should be deleted
     }
   };
@@ -64,7 +52,7 @@ const SignIn = () => {
               className="flex flex-col gap-2 p-8"
               action="post"
               method="post"
-              onSubmit={handleSubmit}
+              onSubmit={handleSignIn}
             >
               <label className="input input-bordered flex items-center gap-2">
                 <svg
