@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
-  // console.log("CreateEvent component is rendering");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [organizerId, setOrganizerId] = useState(""); // New state for organizerId
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -16,6 +16,7 @@ const CreateEvent = () => {
     e.preventDefault();
     const apiToken = localStorage.getItem("apiToken");
 
+    // Prepare event details according to the API schema
     const eventDetails = {
       title,
       description,
@@ -23,6 +24,7 @@ const CreateEvent = () => {
       location,
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
+      organizerId: parseInt(organizerId), // Ensure organizerId is an integer
     };
 
     try {
@@ -36,7 +38,7 @@ const CreateEvent = () => {
       });
 
       if (response.ok) {
-        navigate("/"); // redirect to home if not successful
+        navigate("/"); // Redirect to home if successful
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Failed to create event");
@@ -75,7 +77,6 @@ const CreateEvent = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
-            required
           />
         </div>
 
@@ -137,12 +138,40 @@ const CreateEvent = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:ring focus:ring-indigo-200"
-        >
-          Create Event
-        </button>
+        {/* New field for organizerId */}
+        <div>
+          <label htmlFor="organizerId" className="block font-medium mb-1">
+            Organizer ID
+          </label>
+          <input
+            type="number"
+            id="organizerId"
+            value={organizerId}
+            onChange={(e) => setOrganizerId(e.target.value)}
+            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+            required // Assuming this is required based on your schema
+          />
+        </div>
+
+        {/* Button Container */}
+        <div className="flex space-x-4">
+          {/* Cancel Button */}
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="w-full bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 focus:ring focus:ring-gray-300"
+          >
+            Cancel
+          </button>
+
+          {/* Create Event Button */}
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:ring focus:ring-indigo-200"
+          >
+            Create Event
+          </button>
+        </div>
       </form>
     </div>
   );
