@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import CreateEvent from "./pages/CreateEvent";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<Navigate to="/signin" />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/create-event" element={<CreateEvent />} />
           </Routes>
         </main>
         <Footer />
