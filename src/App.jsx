@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import CreateEvent from "./pages/CreateEvent";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -45,7 +46,10 @@ function App() {
               element={<SignIn setAuthenticated={setAuthenticated} />}
             />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/create-event" element={<CreateEvent />} />
+            {/* Protected route */}
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/create-event" element={<CreateEvent />} />
+            </Route>
           </Routes>
         </main>
         <Footer />
