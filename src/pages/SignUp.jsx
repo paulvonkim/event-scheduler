@@ -18,21 +18,36 @@ const SignUp = () => {
     }
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       setErrorMessage("Please fill in both email and password");
       return;
     }
 
-    // API should save user into db
-    if (email === "user@example.com" && password === "password123") {
-      setErrorMessage("");
-      console.log("Sign-up successful!"); // this should be deleted
-      // Navigate to sign in page
-      navigate("/signin");
-    } else {
-      setErrorMessage("There was an error creating an account.");
+    const url = "http://localhost:3001/api/users";
+    const requestBody = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      if (res.ok) {
+        console.log("SignUp Success");
+        navigate("/signin");
+        alert("Sign up success, you can Sign in now");
+      } else {
+        setErrorMessage("Error during POST request");
+      }
+    } catch (error) {
+      console.error("Error during POST request:", error);
     }
   };
 
@@ -49,12 +64,7 @@ const SignUp = () => {
                 Sign In
               </a>
             </p>
-            <form
-              className="flex flex-col gap-2 p-8"
-              action="post"
-              method="post"
-              onSubmit={handleSubmit}
-            >
+            <form className="flex flex-col gap-2 p-8" onSubmit={handleSubmit}>
               <label className="input input-bordered flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +77,7 @@ const SignUp = () => {
                 </svg>
                 <input
                   id="email"
-                  type="text"
+                  type="email"
                   className="grow"
                   placeholder="Email"
                   onChange={(e) => setEmail(e.target.value)}
