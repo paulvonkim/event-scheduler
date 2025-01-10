@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import CreateEvent from "./pages/CreateEvent";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -44,6 +45,7 @@ function App() {
               element={<SignIn setAuthenticated={setAuthenticated} />}
             />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/create-event" element={<CreateEvent />} />
           </Routes>
         </main>
         <Footer />
