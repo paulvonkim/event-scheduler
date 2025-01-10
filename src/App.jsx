@@ -15,7 +15,7 @@ import Home from "./pages/Home";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
   const [menuVisible, setmenuVisible] = useState(false);
 
   useEffect(() => {
@@ -50,9 +50,9 @@ function App() {
               element={<SignIn setAuthenticated={setAuthenticated} />}
             />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/" element={<Home />} />
             {/* Protected route */}
             <Route element={<ProtectedRoutes />}>
+              <Route path="/" element={<Home />} />
               <Route path="/create-event" element={<CreateEvent />} />
             </Route>
           </Routes>
