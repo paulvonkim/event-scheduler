@@ -47,7 +47,13 @@ function App() {
             />
             <Route
               path="/signin"
-              element={<SignIn setAuthenticated={setAuthenticated} />}
+              element={
+                authenticated ? (
+                  <Navigate to="/" />
+                ) : (
+                  <SignIn setAuthenticated={setAuthenticated} />
+                )
+              }
             />
             <Route path="/signup" element={<SignUp />} />
             {/* Protected route */}
