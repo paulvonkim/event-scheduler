@@ -1,36 +1,70 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = ({ setAuthenticated }) => {
+const SignIn = ({ setAuthenticated, setName, setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       setErrorMessage("Please fill in both email and password");
       return;
     }
 
-    // API should check for credentials
-    if (email === "user@example.com" && password === "password123") {
-      setErrorMessage("");
-      setAuthenticated(true);
+    const url = "http://localhost:3001/api/auth/login";
+    const requestBody = {
+      email: email,
+      password: password,
+    };
 
-      // implement set key and authenticated to local storage
-      localStorage.setItem("authenticated", JSON.stringify(true));
-      console.log("Sign-in successful! "); // this should be deleted
-
-      // Navigate to home page with events list
-      navigate("/");
-    } else {
-      setErrorMessage("Invalid credentials. Please try again.");
-      setAuthenticated(false);
-      localStorage.setItem("authenticated", JSON.stringify(false));
-      console.log("Sign-in unsuccessful!"); // this should be deleted
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setErrorMessage("");
+        setAuthenticated(true);
+        setToken(data.token);
+        localStorage.setItem("authenticated", JSON.stringify(true));
+        localStorage.setItem("token", JSON.stringify(data.token));
+        console.log("SignIn Success");
+        navigate("/");
+        alert("Sign in success");
+        // get profile from logged in user from api/auth/profile
+        try {
+          const res = await fetch("http://localhost:3001/api/auth/profile", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${JSON.parse(
+                localStorage.getItem("token")
+              )}`,
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setName(data.name === null ? "Anonymous" : data.name);
+            localStorage.setItem("name", JSON.stringify(data.name));
+          }
+        } catch (error) {
+          console.error("Error during GET user profile request:", error);
+        }
+      } else {
+        setErrorMessage("Sign in failed, please try again.");
+        setAuthenticated(false);
+        localStorage.setItem("authenticated", JSON.stringify(false));
+      }
+    } catch (error) {
+      console.error("Error during POST request:", error);
     }
   };
 
@@ -65,8 +99,8 @@ const SignIn = ({ setAuthenticated }) => {
                   <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
                 </svg>
                 <input
-                  id="text"
-                  type="text"
+                  id="email"
+                  type="email"
                   className="grow"
                   placeholder="Email"
                   onChange={(e) => setEmail(e.target.value)}
