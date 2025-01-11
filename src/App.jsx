@@ -20,6 +20,7 @@ function App() {
   const [name, setName] = useState(
     JSON.parse(localStorage.getItem("name")) || "Anonymous"
   );
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     const storedAuthenticated = JSON.parse(
@@ -58,6 +59,7 @@ function App() {
                   <SignIn
                     setAuthenticated={setAuthenticated}
                     setName={setName}
+                    setToken={setToken}
                   />
                 )
               }
