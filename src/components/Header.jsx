@@ -3,6 +3,8 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
     setAuthenticated(false);
     setmenuVisible(false);
     localStorage.setItem("authenticated", JSON.stringify(false));
+    localStorage.removeItem("name");
+    localStorage.removeItem("token");
   };
 
   return (
@@ -15,17 +17,15 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
         </div>
 
         <nav className="flex-none">
-          {/* Should be visible only for signed in user */}
           {menuVisible && (
             <ul className="menu menu-horizontal px-1">
               <li>
                 <a>+ New Event</a>
               </li>
               <li>
-                <a href="#">Hi, username</a>
+                <a href="#">Hi, {JSON.parse(localStorage.getItem("name"))}</a>
               </li>
               <li>
-                {/* should set auth to false and logout and redirect to signin  */}
                 <a onClick={handleSignOut}>Sign Out</a>
               </li>
             </ul>
