@@ -6,6 +6,9 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
     localStorage.removeItem("name");
     localStorage.removeItem("token");
   };
+  const handleCreateEvent = () => {
+    window.location.href = "/create-event";
+  };
 
   return (
     <header>
@@ -20,7 +23,7 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
           {menuVisible && (
             <ul className="menu menu-horizontal px-1">
               <li>
-                <a>+ New Event</a>
+                <a onClick={handleCreateEvent}>+ Create Event</a>
               </li>
               <li>
                 <a href="#">Hi, {name}</a>

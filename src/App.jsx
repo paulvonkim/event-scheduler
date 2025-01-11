@@ -12,7 +12,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
-import ProtectedRoutes from "./utils/ProtectedRoutes";
+// import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(true);
@@ -65,11 +65,12 @@ function App() {
               }
             />
             <Route path="/signup" element={<SignUp />} />
-            {/* Protected route */}
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/create-event" element={<CreateEvent />} />
-            </Route>
+            <Route
+              path="/create-event"
+              element={
+                authenticated ? <CreateEvent /> : <Navigate to="/signin" />
+              }
+            />
           </Routes>
         </main>
         <Footer />
