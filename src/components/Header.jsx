@@ -1,4 +1,4 @@
-const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
+const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
   const handleSignOut = () => {
     setAuthenticated(false);
     setmenuVisible(false);
@@ -23,7 +23,7 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
                 <a>+ New Event</a>
               </li>
               <li>
-                <a href="#">Hi, {JSON.parse(localStorage.getItem("name"))}</a>
+                <a href="#">Hi, {name}</a>
               </li>
               <li>
                 <a onClick={handleSignOut}>Sign Out</a>

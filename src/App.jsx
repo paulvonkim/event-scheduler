@@ -17,6 +17,9 @@ import ProtectedRoutes from "./utils/ProtectedRoutes";
 function App() {
   const [authenticated, setAuthenticated] = useState(true);
   const [menuVisible, setmenuVisible] = useState(false);
+  const [name, setName] = useState(
+    JSON.parse(localStorage.getItem("name")) || "Anonymous"
+  );
 
   useEffect(() => {
     const storedAuthenticated = JSON.parse(
@@ -38,6 +41,7 @@ function App() {
           setAuthenticated={setAuthenticated}
           setmenuVisible={setmenuVisible}
           menuVisible={menuVisible}
+          name={name}
         />
         <main className="flex-grow flex items-center justify-center bg-base-200">
           <Routes>
@@ -51,7 +55,10 @@ function App() {
                 authenticated ? (
                   <Navigate to="/" />
                 ) : (
-                  <SignIn setAuthenticated={setAuthenticated} />
+                  <SignIn
+                    setAuthenticated={setAuthenticated}
+                    setName={setName}
+                  />
                 )
               }
             />

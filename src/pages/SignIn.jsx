@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = ({ setAuthenticated }) => {
+const SignIn = ({ setAuthenticated, setName }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
-  const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
@@ -35,14 +34,31 @@ const SignIn = ({ setAuthenticated }) => {
         const data = await res.json();
         setErrorMessage("");
         setAuthenticated(true);
-        setName(data.user.email);
         setToken(data.token);
         localStorage.setItem("authenticated", JSON.stringify(true));
-        localStorage.setItem("name", JSON.stringify(data.user.email));
         localStorage.setItem("token", JSON.stringify(data.token));
         console.log("SignIn Success");
         navigate("/");
         alert("Sign in success");
+        // get profile from logged in user from api/auth/profile
+        try {
+          const res = await fetch("http://localhost:3001/api/auth/profile", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${JSON.parse(
+                localStorage.getItem("token")
+              )}`,
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setName(data.name === null ? "Anonymous" : data.name);
+            localStorage.setItem("name", JSON.stringify(data.name));
+          }
+        } catch (error) {
+          console.error("Error during GET user profile request:", error);
+        }
       } else {
         setErrorMessage("Sign in failed, please try again.");
         setAuthenticated(false);
