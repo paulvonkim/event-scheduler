@@ -8,7 +8,6 @@ const CreateEvent = () => {
   const [location, setLocation] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [organizerId, setOrganizerId] = useState(""); // New state for organizerId
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -20,11 +19,10 @@ const CreateEvent = () => {
     const eventDetails = {
       title,
       description,
-      date,
+      date: new Date(date).toISOString(), // Convert date to ISO format
       location,
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
-      organizerId: parseInt(organizerId), // Ensure organizerId is an integer
     };
 
     try {
@@ -38,19 +36,19 @@ const CreateEvent = () => {
       });
 
       if (response.ok) {
-        navigate("/"); // Redirect to home if successful
+        navigate("/");
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Failed to create event");
       }
     } catch (err) {
-      console.error("Error:", err.message);
+      console.error("Error:", err);
       setError("An unexpected error occurred. Please try again.");
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto p-4">
+    <div className="max-w-xl mx-auto m-8 p-4">
       <h1 className="text-2xl font-bold mb-4">Create Event</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,7 +61,7 @@ const CreateEvent = () => {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -76,7 +74,7 @@ const CreateEvent = () => {
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+            className="w-full px-3 py-2 border rounded-lg"
           />
         </div>
 
@@ -89,7 +87,7 @@ const CreateEvent = () => {
             id="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -103,7 +101,7 @@ const CreateEvent = () => {
             id="location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -118,7 +116,7 @@ const CreateEvent = () => {
             id="latitude"
             value={latitude}
             onChange={(e) => setLatitude(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+            className="w-full px-3 py-2 border rounded-lg"
             required
           />
         </div>
@@ -133,23 +131,8 @@ const CreateEvent = () => {
             id="longitude"
             value={longitude}
             onChange={(e) => setLongitude(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
+            className="w-full px-3 py-2 border rounded-lg"
             required
-          />
-        </div>
-
-        {/* New field for organizerId */}
-        <div>
-          <label htmlFor="organizerId" className="block font-medium mb-1">
-            Organizer ID
-          </label>
-          <input
-            type="number"
-            id="organizerId"
-            value={organizerId}
-            onChange={(e) => setOrganizerId(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-indigo-200"
-            required // Assuming this is required based on your schema
           />
         </div>
 
@@ -159,7 +142,7 @@ const CreateEvent = () => {
           <button
             type="button"
             onClick={() => navigate("/")}
-            className="w-full bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 focus:ring focus:ring-gray-300"
+            className="w-full bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500"
           >
             Cancel
           </button>
@@ -167,9 +150,9 @@ const CreateEvent = () => {
           {/* Create Event Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:ring focus:ring-indigo-200"
+            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
           >
-            Create Event
+            Create
           </button>
         </div>
       </form>

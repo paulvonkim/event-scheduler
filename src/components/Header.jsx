@@ -4,6 +4,9 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
     setmenuVisible(false);
     localStorage.setItem("authenticated", JSON.stringify(false));
   };
+  const handleCreateEvent = () => {
+    window.location.href = "/create-event";
+  };
 
   return (
     <header>
@@ -19,7 +22,7 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible }) => {
           {menuVisible && (
             <ul className="menu menu-horizontal px-1">
               <li>
-                <a>+ New Event</a>
+                <a onClick={handleCreateEvent}>+ Create Event</a>
               </li>
               <li>
                 <a href="#">Hi, username</a>
