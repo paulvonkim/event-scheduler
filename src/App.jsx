@@ -69,10 +69,8 @@ function App() {
   };
 
   useEffect(() => {
-    const storedAuthenticated = JSON.parse(
-      localStorage.getItem("authenticated")
-    );
-    if (storedAuthenticated) {
+    const storedToken = JSON.parse(localStorage.getItem("token"));
+    if (storedToken) {
       setAuthenticated(true);
       setmenuVisible(true);
       fetchUserData();
@@ -81,7 +79,7 @@ function App() {
       setAuthenticated(false);
       setmenuVisible(false);
     }
-  }, [authenticated]);
+  }, [token]);
 
   return (
     <Router>

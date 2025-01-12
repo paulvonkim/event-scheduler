@@ -34,13 +34,11 @@ const SignIn = ({ setAuthenticated, setToken }) => {
         setErrorMessage("");
         setAuthenticated(true);
         setToken(data.token);
-        localStorage.setItem("authenticated", JSON.stringify(true));
         localStorage.setItem("token", JSON.stringify(data.token));
         navigate("/");
       } else {
         setErrorMessage("Sign in failed, please try again.");
         setAuthenticated(false);
-        localStorage.setItem("authenticated", JSON.stringify(false));
       }
     } catch (error) {
       console.error("Error during POST request:", error);
