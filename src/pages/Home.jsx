@@ -1,4 +1,35 @@
-function Home({ id, events, loading }) {
+import { useState, useEffect } from "react";
+
+function Home({ id, token }) {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const fetchUserEvents = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/api/events", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setEvents(data.results);
+        setLoading(false);
+      } else {
+        console.error("Failed to fetch events.");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserEvents();
+  }, []);
+
   return (
     <div className="home">
       {loading ? (
