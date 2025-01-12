@@ -23,6 +23,8 @@ function App() {
   const [token, setToken] = useState(
     JSON.parse(localStorage.getItem("token")) || ""
   );
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchUserData = async () => {
     try {
@@ -43,6 +45,29 @@ function App() {
     }
   };
 
+  const fetchUserEvents = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/api/events", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setEvents(data.results);
+        setLoading(false);
+      } else {
+        console.error("Failed to fetch events.");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const storedAuthenticated = JSON.parse(
       localStorage.getItem("authenticated")
@@ -51,6 +76,7 @@ function App() {
       setAuthenticated(true);
       setmenuVisible(true);
       fetchUserData();
+      fetchUserEvents();
     } else {
       setAuthenticated(false);
       setmenuVisible(false);
@@ -70,7 +96,13 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={authenticated ? <Home /> : <Navigate to="/signin" />}
+              element={
+                authenticated ? (
+                  <Home id={id} events={events} loading={loading} />
+                ) : (
+                  <Navigate to="/signin" />
+                )
+              }
             />
             <Route
               path="/signin"
