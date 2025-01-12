@@ -1,4 +1,4 @@
-function Home({ id, loading, events }) {
+function Home({ id, events, loading }) {
   return (
     <div className="home">
       {loading ? (

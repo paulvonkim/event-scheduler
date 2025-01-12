@@ -81,7 +81,7 @@ function App() {
       setAuthenticated(false);
       setmenuVisible(false);
     }
-  }, [authenticated, events]);
+  }, [authenticated]);
 
   return (
     <Router>
