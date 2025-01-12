@@ -8,7 +8,6 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  // Check if authenticated from localStorage if available and redirect to home if true
   useEffect(() => {
     const storedAuthenticated = JSON.parse(
       localStorage.getItem("authenticated")
@@ -40,9 +39,7 @@ const SignUp = () => {
         body: JSON.stringify(requestBody),
       });
       if (res.ok) {
-        console.log("SignUp Success");
         navigate("/signin");
-        alert("Sign up success, you can Sign in now");
       } else {
         setErrorMessage("Error during POST request");
       }

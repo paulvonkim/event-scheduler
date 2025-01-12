@@ -3,11 +3,14 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
     setAuthenticated(false);
     setmenuVisible(false);
     localStorage.setItem("authenticated", JSON.stringify(false));
-    localStorage.removeItem("name");
     localStorage.removeItem("token");
   };
   const handleCreateEvent = () => {
     window.location.href = "/create-event";
+  };
+  const handleUserProfile = () => {
+    console.log("handleUserProfile clicked");
+    window.location.href = "/profile";
   };
 
   return (
@@ -26,7 +29,7 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
                 <a onClick={handleCreateEvent}>+ Create Event</a>
               </li>
               <li>
-                <a href="#">Hi, {name}</a>
+                <a onClick={handleUserProfile}>Hi, {name}</a>
               </li>
               <li>
                 <a onClick={handleSignOut}>Sign Out</a>

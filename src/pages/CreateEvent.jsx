@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const CreateEvent = () => {
+const CreateEvent = ({ token }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -13,7 +13,7 @@ const CreateEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const apiToken = localStorage.getItem("apiToken");
+    // const apiToken = JSON.parse(localStorage.getItem("token"));
 
     const eventDetails = {
       title,
@@ -29,7 +29,7 @@ const CreateEvent = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${apiToken}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(eventDetails),
       });
