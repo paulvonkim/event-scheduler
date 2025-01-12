@@ -14,6 +14,7 @@ import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import UpdateUserProfile from "./pages/UpdateUserProfile";
 // import ProtectedRoutes from "./utils/ProtectedRoutes";
+import EventDetails from "./pages/EventDetails";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(true);
@@ -106,6 +107,16 @@ function App() {
                     name={name}
                     token={token}
                   />
+                ) : (
+                  <Navigate to="/signin" />
+                )
+              }
+            />
+            <Route
+              path="/event/:eventId"
+              element={
+                authenticated ? (
+                  <EventDetails token={token} />
                 ) : (
                   <Navigate to="/signin" />
                 )
