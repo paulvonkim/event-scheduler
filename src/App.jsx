@@ -12,15 +12,17 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
+import UpdateUserProfile from "./pages/UpdateUserProfile";
 // import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(true);
   const [menuVisible, setmenuVisible] = useState(false);
-  const [name, setName] = useState(
-    JSON.parse(localStorage.getItem("name")) || "Anonymous"
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [token, setToken] = useState(
+    JSON.parse(localStorage.getItem("token")) || ""
   );
-  const [token, setToken] = useState("");
 
   useEffect(() => {
     const storedAuthenticated = JSON.parse(
@@ -29,11 +31,32 @@ function App() {
     if (storedAuthenticated) {
       setAuthenticated(true);
       setmenuVisible(true);
+      const fetchUserData = async () => {
+        try {
+          const res = await fetch("http://localhost:3001/api/auth/profile", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${JSON.parse(
+                localStorage.getItem("token")
+              )}`,
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setId(data.id);
+            setName(data.name === null ? data.email : data.name);
+          }
+        } catch (error) {
+          console.error("Error during GET user profile request:", error);
+        }
+      };
+      fetchUserData();
     } else {
       setAuthenticated(false);
       setmenuVisible(false);
     }
-  });
+  }, [authenticated]);
 
   return (
     <Router>
@@ -58,7 +81,6 @@ function App() {
                 ) : (
                   <SignIn
                     setAuthenticated={setAuthenticated}
-                    setName={setName}
                     setToken={setToken}
                   />
                 )
@@ -68,7 +90,26 @@ function App() {
             <Route
               path="/create-event"
               element={
-                authenticated ? <CreateEvent /> : <Navigate to="/signin" />
+                authenticated ? (
+                  <CreateEvent token={token} />
+                ) : (
+                  <Navigate to="/signin" />
+                )
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                authenticated ? (
+                  <UpdateUserProfile
+                    id={id}
+                    setName={setName}
+                    name={name}
+                    token={token}
+                  />
+                ) : (
+                  <Navigate to="/signin" />
+                )
               }
             />
           </Routes>
