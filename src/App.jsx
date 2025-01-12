@@ -13,7 +13,6 @@ import SignUp from "./pages/SignUp";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import UpdateUserProfile from "./pages/UpdateUserProfile";
-// import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(true);
