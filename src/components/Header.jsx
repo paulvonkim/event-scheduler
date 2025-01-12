@@ -2,7 +2,6 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
   const handleSignOut = () => {
     setAuthenticated(false);
     setmenuVisible(false);
-    localStorage.setItem("authenticated", JSON.stringify(false));
     localStorage.removeItem("token");
   };
   const handleCreateEvent = () => {
