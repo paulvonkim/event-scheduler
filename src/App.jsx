@@ -24,6 +24,25 @@ function App() {
     JSON.parse(localStorage.getItem("token")) || ""
   );
 
+  const fetchUserData = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/profile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setId(data.id);
+        setName(data.name === null ? data.email : data.name);
+      }
+    } catch (error) {
+      console.error("Error during GET user profile request:", error);
+    }
+  };
+
   useEffect(() => {
     const storedAuthenticated = JSON.parse(
       localStorage.getItem("authenticated")
@@ -31,26 +50,6 @@ function App() {
     if (storedAuthenticated) {
       setAuthenticated(true);
       setmenuVisible(true);
-      const fetchUserData = async () => {
-        try {
-          const res = await fetch("http://localhost:3001/api/auth/profile", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${JSON.parse(
-                localStorage.getItem("token")
-              )}`,
-            },
-          });
-          if (res.ok) {
-            const data = await res.json();
-            setId(data.id);
-            setName(data.name === null ? data.email : data.name);
-          }
-        } catch (error) {
-          console.error("Error during GET user profile request:", error);
-        }
-      };
       fetchUserData();
     } else {
       setAuthenticated(false);
