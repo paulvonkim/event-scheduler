@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import EventCard from "../components/EventCard";
+import { useLocation } from "react-router-dom";
 
 function Home({ id, token }) {
   const [events, setEvents] = useState([]);
@@ -28,28 +30,19 @@ function Home({ id, token }) {
 
   useEffect(() => {
     fetchUserEvents();
-  }, []);
+  }, [token, location.key]);
 
   return (
-    <div className="home">
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">My Events</h1>
       {loading ? (
-        <div>Loading events...</div>
+        <div className="text-center">Loading events...</div>
       ) : (
-        <div className="events-list">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events.length > 0 ? (
             events
               .filter((event) => event.organizerId === id)
-              .map((event) => (
-                <div key={event.id} className="event-card">
-                  <h3>{event.title}</h3>
-                  <p>{event.description}</p>
-                  <p>{event.date}</p>
-                  <p>{event.location}</p>
-                  <p>{event.latitude}</p>
-                  <p>{event.longitude}</p>
-                  <a href={`/event/${event.id}`}>View Details</a>
-                </div>
-              ))
+              .map((event) => <EventCard key={event.id} event={event} />)
           ) : (
             <p>No events found.</p>
           )}

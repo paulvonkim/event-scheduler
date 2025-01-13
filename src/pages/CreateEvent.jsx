@@ -35,7 +35,7 @@ const CreateEvent = ({ token }) => {
       });
 
       if (response.ok) {
-        navigate("/");
+        navigate("/", { state: { newEventCreated: true } });
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Failed to create event");
