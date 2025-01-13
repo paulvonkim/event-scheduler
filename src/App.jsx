@@ -13,6 +13,7 @@ import SignUp from "./pages/SignUp";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import UpdateUserProfile from "./pages/UpdateUserProfile";
+import EventDetails from "./components/EventDetails";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(true);
@@ -114,6 +115,7 @@ function App() {
                 )
               }
             />
+            <Route path="/event/:id" element={<EventDetails token={token} />} />
           </Routes>
         </main>
         <Footer />
