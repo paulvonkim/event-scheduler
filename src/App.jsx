@@ -13,8 +13,6 @@ import SignUp from "./pages/SignUp";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import UpdateUserProfile from "./pages/UpdateUserProfile";
-// import ProtectedRoutes from "./utils/ProtectedRoutes";
-import EventDetails from "./pages/EventDetails";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(true);
@@ -24,8 +22,6 @@ function App() {
   const [token, setToken] = useState(
     JSON.parse(localStorage.getItem("token")) || ""
   );
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchUserData = async () => {
     try {
@@ -46,43 +42,17 @@ function App() {
     }
   };
 
-  const fetchUserEvents = async () => {
-    try {
-      const res = await fetch("http://localhost:3001/api/events", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setEvents(data.results);
-        setLoading(false);
-      } else {
-        console.error("Failed to fetch events.");
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching user events:", error);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    const storedAuthenticated = JSON.parse(
-      localStorage.getItem("authenticated")
-    );
-    if (storedAuthenticated) {
+    const storedToken = JSON.parse(localStorage.getItem("token"));
+    if (storedToken) {
       setAuthenticated(true);
       setmenuVisible(true);
       fetchUserData();
-      fetchUserEvents();
     } else {
       setAuthenticated(false);
       setmenuVisible(false);
     }
-  }, [authenticated]);
+  }, [token]);
 
   return (
     <Router>
@@ -99,7 +69,7 @@ function App() {
               path="/"
               element={
                 authenticated ? (
-                  <Home id={id} events={events} loading={loading} />
+                  <Home id={id} token={token} />
                 ) : (
                   <Navigate to="/signin" />
                 )
