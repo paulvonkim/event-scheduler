@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
   const handleSignOut = () => {
     setAuthenticated(false);
@@ -24,11 +26,31 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
         <nav className="flex-none">
           {menuVisible && (
             <ul className="menu menu-horizontal px-1">
-              <li>
-                <a onClick={handleCreateEvent}>+ Create Event</a>
+              <li className="mr-1">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Home
+                </NavLink>
               </li>
-              <li>
-                <a onClick={handleUserProfile}>Hi, {name}</a>
+              <li className="mr-1">
+                <NavLink
+                  onClick={handleCreateEvent}
+                  to="/create-event"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  + Create Event
+                </NavLink>
+              </li>
+              <li className="mr-1">
+                <NavLink
+                  onClick={handleUserProfile}
+                  to="/profile"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Hi, {name}
+                </NavLink>
               </li>
               <li>
                 <a onClick={handleSignOut}>Sign Out</a>
@@ -38,11 +60,21 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
 
           {!menuVisible && (
             <ul className="menu menu-horizontal px-1">
-              <li>
-                <a href="/signin">Sign In</a>
+              <li className="mr-1">
+                <NavLink
+                  to="/signin"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Sign In
+                </NavLink>
               </li>
               <li>
-                <a href="/signup">Sign Up</a>
+                <NavLink
+                  to="/signup"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Sign Up
+                </NavLink>
               </li>
             </ul>
           )}
