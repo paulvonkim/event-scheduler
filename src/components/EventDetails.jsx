@@ -52,14 +52,17 @@ function EventDetails({ token }) {
 
   const handleSaveEdit = async () => {
     try {
+      const { id, createdAt, updatedAt, ...updatedEvent } = editedEvent; // Exclude id, createdAt, updatedAt - not allowed to change
+
       const res = await fetch(`http://localhost:3001/api/events/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(editedEvent),
+        body: JSON.stringify(updatedEvent),
       });
+
       if (res.ok) {
         setEvent(editedEvent);
         setIsEditModalOpen(false);
