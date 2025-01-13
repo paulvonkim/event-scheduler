@@ -18,6 +18,7 @@ const Header = ({ setAuthenticated, setmenuVisible, menuVisible, name }) => {
     <header>
       <div className="navbar bg-base-100">
         <div className="flex-1">
+          <img className="w-8" src="../../favicon.png" alt="logo" />
           <a className="link link-hover text-3xl font-semibold pl-3" href="/">
             Event Scheduler
           </a>
