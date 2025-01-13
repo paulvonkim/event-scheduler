@@ -145,7 +145,7 @@ function App() {
               }
             />
             <Route
-              path="/event/:eventId"
+              path="/event/:id"
               element={
                 authenticated ? (
                   <EventDetails token={token} />

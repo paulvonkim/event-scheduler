@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function EventDetails({ token }) {
-  const { eventId } = useParams();
+  const { id } = useParams();
   const [event, setEvent] = useState(null);
+  const navigate = useNavigate();
 
   const fetchEventDetails = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/events/${eventId}`, {
+      const res = await fetch(`http://localhost:3001/api/events/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -27,14 +28,24 @@ function EventDetails({ token }) {
 
   useEffect(() => {
     fetchEventDetails();
-  }, [eventId]);
+  }, [id]);
 
   if (!event) {
     return <p>Loading...</p>;
   }
 
+  const handleGoBack = () => {
+    navigate(-1); // Navigate back to the previous page
+  };
+
   return (
     <div className="p-4">
+      <button
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        onClick={handleGoBack}
+      >
+        Back
+      </button>
       <h1 className="text-3xl font-bold">{event.title}</h1>
       <p className="text-gray-600">{event.date}</p>
       <p className="text-gray-800 mt-4">{event.description}</p>
